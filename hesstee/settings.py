@@ -165,7 +165,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 465
 EMAIL_USE_SSL = True
 EMAIL_HOST_USER = "adexplace@gmail.com"
-EMAIL_HOST_PASSWORD = "bjsbffzewrsqwsip"
+EMAIL_HOST_PASSWORD = os.environ['PASSWORD']
 
 # if os.getcwd() == '/app':
 #     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO",'https')
