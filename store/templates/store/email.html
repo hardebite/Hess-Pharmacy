@@ -1,0 +1,14 @@
+{% load  static  %}                                                                      
+{{ address }}  
+{{ city }} 
+{{number }}                                                                                                                                                                            
+Hey {{name}}
+    A big thank you for  patronizing us and trusting us  , your order will be delivered shortly.
+Your oder consist of :{% for item in items %}
+    {{ item.quantity }} pack(s) of {{item.product.name }} charged at  {% if item.product.sales %}₦{{item.product.sales_price| floatformat:2}}{% else %}₦{{item.product.price| floatformat:2}}{% endif  %} 
+    {% endfor %}
+    the total cost was ₦{{total}}
+    
+
+                                                                                                 Hess Tee Pharmacy
+

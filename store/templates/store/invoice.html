@@ -1,0 +1,65 @@
+{% load static %}
+
+<body style="font-size: 0.8rem;">
+    <div style="padding-left: 20px;padding-top:50px;">
+    <div style="width:500px ; align-items: center;padding-left: 30px;" class=" box-element">
+        <table  cellpadding ="0" cellspacing ="0">
+            <tr class="top">
+              
+                        <td  colspan="4" class="title">
+                            <img style="width:100px;"  src="/Users/D-BEATS/Desktop/pharmacy/static/images/logo.png" alt="">
+    
+                        </td>
+                        <td>
+                            Invoice #:{{id}} <br>
+                            Created: {{date}} <br>
+                            transaction_id: <br>
+                        </td>
+                 
+               
+            </tr>
+            <tr " class="information" >
+                
+                            <td colspan="4" >
+                                Hess Tee Pharmacy <br>
+                                91 A egbe road,Ejigbo<br>
+                                Lagos, Nigeria
+                                
+                            </td>
+                            <td>
+                                {{name}} <br>
+                                {{number}}<br>
+                                {{email}}<br>
+                                {{address}} <br>
+                            </td>
+                        
+            </tr>
+            <tr class="total" >
+                <td colspan="4">Item(s) </td>
+                <td >Price</td>
+            </tr>
+            {% for item in items %}
+            <tr class="heading">
+                <td colspan="4">{{item.quantity}} &nbsp;&nbsp;  {{item.product.name }}</td>
+                {% if item.product.sales %}
+                <td># {{item.product.sales_price| floatformat:2}}</td>
+            {% else %}
+             <td>#{{item.product.price| floatformat:2}}</td>
+            {% endif  %}
+                
+            </tr>
+            {% endfor %}
+            <tr class="total" >
+                <td colspan="4">Item(s) : {{ order.get_cart_items }}</td>
+                <td >Total : # {{total }} <br></td>
+            </tr>
+            
+        </table>
+    
+    </div>
+   
+</div>
+   
+        
+</body>
+

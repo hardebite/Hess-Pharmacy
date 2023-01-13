@@ -1,0 +1,68 @@
+{% extends 'store/main.html' %}
+{% load static%}
+{% block content %}
+<div class="first-con">
+    <div class="top-desc">
+    <h1>Hess Tee Pharmacy<img style="height:2rem ;" src="{%static  'images/logo.png'%}" alt=""></h1> 
+    <h4 style="font-family: 'Sacramento', cursive;font-size: 1.5rem;">Your Wellbeing Is Our Passion</h4>
+    </div>
+    <img class="first-pic" src="{% static  'images/dotun.webp'%}" alt="">
+</div>
+<div style="text-align: center;padding-top: 50px;" class="row" >
+    <h2>Our Featured Products</h2>
+      {% for product in products %}
+      
+      <div style="padding-top: 50px;" class="col-6 col-lg-3" >
+          <img class="thumbnail" src="{{product.image.url }}" alt="">
+          
+          <div class="box-element product" ></div>
+          {% if product.quantity <= 0  %}
+          <h6><strong>{{product.name}}</strong></h6>
+          
+          <hr>
+          <h6 style=" display:inline-block ; float:center;">Out of Stock</h6>
+          
+          
+          {% else %}
+          <h6><strong>{{product.name}}</strong></h6>
+          <hr>
+          <button  data-product="{{ product.id }}" data-action="add" class="btn btn-outline-secondary add-btn update-cart" 
+          >Add to Cart</button>
+          {% endif%}
+          <button class="btn btn-success"> <a style="color: white; text-decoration: none;" href="{% url 'detail' product.id%}">View</a> </button>
+          {% if product.sales %}
+          <h6 style="font-size:10px ; display:inline-block ; float:right;color:red; padding-top: 10px;" ><s>₦{{ product.price | floatformat:2}}</s> </h6>
+          <h6 style="display:inline-block ; float:right;color:black; padding-top: 20px;" >₦{{ product.sales_price | floatformat:2}} </h6>
+          {% else %}
+          <h6 style="display:inline-block ; float:right;color:black; padding-top: 20px;" > ₦{{ product.price | floatformat:2}}</h6>
+          {% endif  %}
+        </div>
+        
+      {%endfor %}
+      <a   href="{% url 'store' %}"><button  class="btn btn-outline-success mt-5 rounded">Shop Now</button></a>
+      <div style="margin-top: 50px; text-align:center ;" >
+        <h1 style="margin-bottom : 20px;">Featured Articles</h1>
+        {%for article in articles%}
+      <div  class="post-preview">
+        
+          <h2  class="post-title">
+            {{article.title}}
+          </h2>
+          <p style="text-align:left;" class="post-subtitle">
+            {{article.subtitle}} &nbsp; <a style="text-decoration: none;"  href="{% url 'article_detail' article.id %}">Read More....</a>
+          </p>
+        <p>{{article.date}}</p>
+      </div>
+      <hr>
+      </div>
+      {%endfor %}
+      <a href="{% url 'article' %}"><button class="btn btn-outline-primary rounded"> Read more articles</button></a>
+      
+
+      <div class="talk" style="color:black;font-size:2rem ;text-align:center ;background-image:url('https://media.istockphoto.com/id/1036134078/photo/take-it-from-me-happiness-is-great-for-your-health.jpg?b=1&s=170667a&w=0&k=20&c=6q5FCDzTzO1lYnqnP9DYVQWh4gu7O-tDSQ7Q2npr9XQ=') ;">
+        <h6 style="padding-top: 150px;">GOT A QUESTION ?</h6>
+        <b style="font-size:2rem;">Chat With Us</b>
+        <h6>We are one click away</h6>
+        <a class="btn btn-secondary rounded" href="https://api.whatsapp.com/send?phone=08023127633">Start Chat</a>
+      </div>
+{% endblock %}

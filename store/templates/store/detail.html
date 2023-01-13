@@ -1,0 +1,58 @@
+{% extends 'store/main.html'%}
+{% load  static  %}
+{% block content%}
+
+<div class="row" >
+    <a  href="{% url 'store' %}"><button class="btn btn-outline-success rounded">  Continue Shopping</button></a>
+    
+    <div class="col-lg-6" >
+        <img style="height: 350px;" src="{{product.image.url }}" alt="">
+        <div  style="width: 47.5%;"  class="box-element product" ></div>
+        {% if product.quantity <= 0  %}
+        <h6><strong>{{product.name}}</strong></h6>
+        
+        <hr>
+        <h6 style=" display:inline-block ; float:center;">Out of Stock</h6>
+        
+        
+        {% else %}
+        <h6><strong>{{product.name}}</strong></h6>
+        <hr>
+        <h6>{{product.description}}</h6>
+        <button  data-product="{{ product.id }}" data-action="add" class="btn btn-outline-secondary add-btn update-cart" 
+        >Add to Cart</button>
+        {% endif%}
+        {% if product.sales %}
+        <h6 style="display:inline-block ; float:right;color:grey;padding-left: 20px;" ><s>₦{{ product.price | floatformat:2}}</s> </h6>
+        <h6 style="display:inline-block ; float:right;color:black;" >₦{{ product.sales_price | floatformat:2}} </h6>
+        {% else %}
+        <h6 style="display:inline-block ; float:right;color:black;" > ₦{{ product.price | floatformat:2}}</h6>
+        {% endif  %}
+        {% if user.is_staff %}
+          <!-- Button trigger modal -->
+<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Delete
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Delete</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        You sure you want to delete??
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button class="btn btn-danger"><a style="color: white;text-decoration: none;" href="{% url 'delete'  product.id %}">Delete</a></button>
+      </div>
+    </div>
+  </div>
+</div>
+        {% endif %}
+      </div>
+    
+{% endblock %}

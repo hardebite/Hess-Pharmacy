@@ -1,0 +1,29 @@
+{% extends 'store/main.html'%}
+{% load  static  %}
+{% block content%}
+<div style="padding-top: 10px;padding-bottom: 50px">
+    <form action="{% url 'NewArticle' %}"  method="POST" enctype="multipart/form-data" >
+        {% csrf_token %}
+    <div id="shipping-info">
+        <hr>
+                <p style="text-align: center;">Article</p>
+                <hr>
+                <div class="form-field">
+                    <input class="form-control" type="text" name="title" placeholder="Title..">
+                </div><br>
+                <div class="form-field">
+                    <input class="form-control" type="text" name="subtitle" placeholder="Subtitle..">
+                </div><br>
+                <div  class="form-field">
+                    <textarea placeholder="Body...." name="body" id="" cols="30" rows="10"></textarea>
+                </div><br>
+                
+    </div>
+    <hr> 
+                <div class="d-grid gap-2 ">
+                <input id ="form-button" class="btn  btn-success btn-block" type="submit" value="continue">
+            </div>
+            
+            </form>
+
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends 'store/main.html'%}
+{% load  static  %}
+{% block content%}
+<div class="row" >
+  {% if empty%}
+  <div style="text-align:center ;margin-top:30px;">
+    <h4>Sorry this product is currently not available</h4>
+    <a  href="{% url 'store' %}"><button class="btn btn-outline-success rounded">& Continue Shopping</button></a>
+  </div>
+ 
+  {%endif%}
+  {% if user.is_staff %}
+  <a  href="{% url 'add' %}"><button class="btn btn-outline-success my-2 rounded">Create New Product</button></a>
+        {% endif %}
+    {% for product in products %}
+    
+    <div style="padding-top: 50px;" class="col-6 col-lg-3" >
+        <img class="thumbnail" src="{{product.image.url }}" alt="">
+        
+        <div class="box-element product" ></div>
+        {% if product.quantity <= 0  %}
+        <h6><strong>{{product.name}}</strong></h6>
+        
+        <hr>
+        <h6 style=" display:inline-block ; float:center;">Out of Stock</h6>
+        
+        
+        {% else %}
+        <h6><strong>{{product.name}}</strong></h6>
+        <hr>
+        <button  data-product="{{ product.id }}" data-action="add" class="btn btn-outline-secondary add-btn update-cart" 
+        >Add to Cart</button>
+        {% endif%}
+        <button class="btn btn-success"> <a style="color: white; text-decoration: none;" href="{% url 'detail' product.id%}">View</a> </button>
+        {% if product.sales %}
+        <h6 style="font-size:10px ; display:inline-block ; float:right;color:red; padding-top: 10px;" ><s>₦{{ product.price | floatformat:2}}</s> </h6>
+        <h6 style="display:inline-block ; float:right;color:black; padding-top: 20px;" >₦{{ product.sales_price | floatformat:2}} </h6>
+        {% else %}
+        <h6 style="display:inline-block ; float:right;color:black; padding-top: 20px;" > ₦{{ product.price | floatformat:2}}</h6>
+        {% endif  %}
+      </div>
+      
+    {%endfor %}
+    
+    
+
+
+
+    <div style="padding-top: 50px;" class='pagination justify-content-center'>
+{% if products.has_previous %}
+
+  <li class="page-item"><a class="btn btn-success rounded me-2" href="?page={{ products.previous_page_number }}"> &laquo;Previous </a></li>
+{% endif %}          
+{% for i in products.paginator.page_range %}
+
+
+{% if products.number == i %}
+
+
+  <li class="    page-item active" aria-current="page"><span><a class=" btn btn-success me-2 rounded " href="">{{ i }}</a></span></li>
+
+{% else %}
+
+  <li class="page-item"><a class=" btn btn-success me-2 rounded" href="?page={{ i }}">{{ i }}</a></li>
+
+{% endif %}
+
+{% endfor %}
+
+
+{% if products.has_next %}
+
+<li class="page-item"><a class="btn btn-success rounded" href="?page={{ products.next_page_number }}"> Next &raquo;</a></li>
+
+
+{% else %}
+
+<li class="page-item btn btn-success rounded "> </li>
+
+{% endif %}
+</div>
+
+{% endblock %}
+    
+
+    

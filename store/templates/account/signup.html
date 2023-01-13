@@ -1,0 +1,21 @@
+{% extends 'store/main.html' %}
+{% load static%}
+{% block content %}
+
+{% load i18n %}
+{% load account socialaccount %}
+<div style="text-align:center ;padding-top:50px ;padding-bottom:70px ;margin-bottom: 100px;" class="box-element">
+<h2>Sign Up </h2>
+
+<p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
+
+<form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+  {% csrf_token %}
+  {{ form.as_p }}
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+  {% endif %}
+  <button class="primaryAction btn btn-success rounded" type="submit">{% trans "Sign Up" %} </button>
+</form>
+</div>
+{% endblock %}

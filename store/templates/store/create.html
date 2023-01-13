@@ -1,0 +1,43 @@
+{% extends 'store/main.html'%}
+{% load  static  %}
+{% block content%}
+<div style="padding-top: 50px;padding-bottom: 50px">
+<form action="{% url 'new' %}"  method="POST" enctype="multipart/form-data" >
+    {% csrf_token %}
+<div id="shipping-info">
+    <hr>
+            <p style="text-align: center;">Product Information</p>
+            <hr>
+            <div class="form-field">
+                <input class="form-control" type="text" name="name" placeholder="Name..">
+            </div><br>
+            <div class="form-field">
+                <input class="form-control" type="number" name="price" placeholder="Price">
+            </div><br>
+            <div style="color: grey;" class="form-field">
+                &nbsp;&nbsp; Digital: <input  type="checkbox" name="digital" placeholder="digital">
+            </div><br>
+            <div class="form-field">
+                <input class="form-control" type="number" name="quantity" placeholder="Quantity">
+            </div><br>
+            <div class="form-field">
+                <input class="form-control" type="file" name="image" placeholder="Image" accept="image/">
+            </div><br>
+            <div  class="form-field">
+                <textarea placeholder="Description...." name="description" id="" cols="30" rows="10"></textarea>
+            </div><br>
+            <div style="color: grey;" class="form-field">
+                &nbsp;&nbsp; Sales: <input  type="checkbox" name="sales" placeholder="Sales">
+            </div><br>
+            <div class="form-field">
+                <input class="form-control" type="number" name="sales_price" placeholder="Sales Price">
+            </div><br>
+            
+</div>
+<hr> 
+            <div class="d-grid gap-2 ">
+            <input id ="form-button" class="btn  btn-success btn-block" type="submit" value="continue">
+        </div>
+        
+        </form>
+{% endblock %}

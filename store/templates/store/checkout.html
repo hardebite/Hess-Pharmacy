@@ -1,0 +1,233 @@
+{% extends 'store/main.html'%}
+{% load static %}
+{% block content%}
+{%csrf_token%}
+<div class="row">
+   <div class="col-lg-6">
+    <div class="box-element" id="form-wrapper">
+        <form  id= "form" action="">
+            <div id="user-info">
+                <div class="form-field">
+                    <input required class="form-control" type="text" name="name" placeholder="Name..">
+                </div>
+                <div class="form-field">
+                    <input required class="form-control" type="email" name="email" placeholder="Email..">
+                </div>
+            </div>
+
+            <div id="shipping-info">
+                <hr>
+						<p>Shipping Information:</p>
+						<hr>
+						<div class="form-field">
+							<input required class="form-control" type="text" name="address" placeholder="Address..">
+						</div>
+                        
+						<div class="form-field">
+							<input required class="form-control" type="text" name="city" placeholder="City..">
+						</div>
+						<div class="form-field">
+							<input required class="form-control" type="text" name="state" placeholder="State..">
+						</div>
+						<div class="form-field">
+							<input required class="form-control"type="text" name="zipcode" placeholder="Zip code..">
+						</div>
+						<div class="form-field">
+							<input required class="form-control" type="text" name="number" placeholder="Phone  Number...">
+						</div>
+            </div>
+            <hr> 
+            <div class="d-grid gap-2 ">
+            <input id ="form-button" class="btn  btn-success btn-block" type="submit" value="continue">
+        </div>
+        </form>
+    </div>
+
+        <br>
+        {% if order.get_cart_items == 0 %}
+                       
+        {% else %}
+        <div class="box-element hidden" id="payment-info">
+            <small>FlutterWave</small>
+            <button class="btn btn-outline-success" onclick="makePayment()" id="make-payment">Make Payment</button>
+        </div>
+        {% endif %}
+   </div>
+  
+   <div class="col-lg-6">
+    <div class="box-element">
+        <a class="btn btn-outline-dark" href="{% url 'cart' %}">&#x2190; Back to Cart</a>
+        <hr>
+        <h3>Order Summary</h3>
+        <hr>
+        {% if order.get_cart_items == 0 %}
+                        
+        {% else %}
+
+        {% for item in items %}
+        <div class="cart-row">
+            <div style="flex:2"><img class="row-image" src="{{item.product.imageUrl}}" alt=""></div>
+            <div style="flex:2"><p>{{item.product.name }}</p> </div>
+            {% if item.product.sales %}
+            <div style="flex:1"><p> ₦{{item.product.sales_price| floatformat:2}}</p></div>
+            {% else %}
+            <div style="flex:1"><p> ₦{{item.product.price| floatformat:2}}</p></div>
+            {% endif  %}
+            <div style="flex:1">
+                <p class="quantity total-quantity">{{item.quantity}}</p>
+            </div> 
+        </div>
+        {% endfor %}
+        <h5>Items : {{ order.get_cart_items }}</h5>
+        <h5>Total : ₦{{ order.get_cart_total|floatformat:2}}</h5> 
+    </div>
+   </div>
+   {% endif%}
+</div>
+<script src="https://checkout.flutterwave.com/v3.js"></script>
+<script>
+    
+    
+   
+    var shipping = '{{order.shipping}}';
+    var total = '{{order.get_cart_total }}';
+    if (shipping =='False'){
+        document.getElementById('shipping-info').innerHTML = ' '
+    }
+    if(user != 'AnonymousUser'){
+        document.getElementById('user-info').innerHTML = ' '
+    }
+    if (shipping == 'False' && user != 'AnonymousUser'){
+        //Hide the entire form if user is logged in and shipping is false
+
+        document.getElementById('form-wrapper').classList.add("hidden")
+        //show payment if logged in user wants to buy an item that does not require shipping
+        document.getElementById('payment-info').classList.remove('hidden')
+    }   
+    var form = document.getElementById('form');
+    form.addEventListener('submit',function(e){
+    e.preventDefault()
+    console.log('Form Submitted....')
+    document.getElementById('form-button').classList.add('hidden');
+    document.getElementById('payment-info').classList.remove('hidden');
+    });
+    function refresh(){
+        cart={}
+        window.location.href= "{% url 'store' %}"
+    }
+
+    // document.getElementById('make-payment').addEventListener('click',function(e){
+    // submitFormData();
+    // })
+    function submitFormData(){
+    const myTimeout = setTimeout(refresh,3000)
+   var userFormData ={
+            'name':null,
+            'email':null,
+            'total':total,
+        }
+    var shippingInfo ={
+            'address':null,
+            'city':null,
+            'state':null,
+            'zipcode':null,
+            'number':null,
+
+        } 
+    if(shipping  != 'False'){
+    shippingInfo.address = form.address.value
+    shippingInfo.city = form.city.value
+    shippingInfo.state = form.state.value
+    shippingInfo.zipcode= form.zipcode.value
+    shippingInfo.number = form.number.value
+    }
+    if(user == 'AnonymousUser'){
+    userFormData.name= form.name.value
+    userFormData.email = form.email.value
+    }
+
+        alert('payment button clicked')
+        
+        var url = '/process_order/';
+    
+    
+        fetch(url,{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json',
+                'X-CSRFToken':csrftoken,
+            },
+            body:JSON.stringify({'form':userFormData,'shipping':shippingInfo})
+            
+        })
+        .then((response) =>{
+            return response.json();
+           alert("1")
+        })
+        .then((data) => {
+            console.log('success:',data);
+           
+
+            cart = {}
+            document.cookie='cart='+ JSON.stringify(cart)+";domain=;path=/"
+            
+        
+            window.location.href= "{% url 'render_pdf_view' %}"
+        
+        
+    });
+
+    }
+    function makePayment() {
+       
+        if(user == 'AnonymousUser'){
+    var name = form.name.value
+    var email = form.email.value
+    }else{
+        var name = "{{user}}"
+        var email = "{{user.email}}"
+    }
+    if(shipping  != 'False'){
+   number = form.number.value
+    }else{
+        number = 111222333444555
+    }
+  
+  FlutterwaveCheckout({
+    
+    public_key: "FLWPUBK_TEST-209ffd413df5410cc606a3e3938846fa-X",
+    tx_ref: "titanic-48981487343MDI0NzMx",
+    amount: "{{ order.get_cart_total|floatformat:2}}",
+    currency: "NGN",
+    payment_options: "card, mobilemoneyghana, ussd",
+    callback:function(){
+        submitFormData()
+    },
+    onclose:function(incomplete){
+        if(incomplete === true){
+            window.location.href= "{% url 'checkout' %}"
+        }
+        
+    },
+    
+    meta: {
+      consumer_id: 23,
+      consumer_mac: "92a3-912ba-1192a",
+    },
+    customer: {
+        email: email,
+      phone_number: number,
+      name: name,
+    },
+    customizations: {
+        title: "Hess Tee Pharmacy",
+      description: "Payment for items from our store",
+      logo: "static/images/logo.png",
+    },
+  });
+ 
+}
+
+</script>
+
+{% endblock %}
