@@ -159,18 +159,40 @@ def record (request):
     
     if page == None or page == "":
       page = 1
-    data = cartData(request)
-    cartItems = data['cartItems']
-    # products= Product.objects.all()
-    order = OrderItem.objects.all().order_by("-id")
-    shipping = ShippingAddress.objects.all()
-    
-    paginator = paginator_class(order, paginate_by)
-    order = paginator.page(page)
-    context = {'cartItems':cartItems,'table':order,"info":shipping}
-    context['form']= InputForm()
 
-    return render(request, 'store/records.html', context)
+    if request.method == 'POST':
+        # print('yrs')
+        data = cartData(request)
+        cartItems = data['cartItems']
+        data = request.POST['search']
+       
+       
+        try:
+                # products = Product.objects.filter(name__icontains = data)
+                order = OrderItem.objects.filter(order__transaction_id__icontains = data).order_by('-id')
+                shipping = ShippingAddress.objects.all()
+                
+                paginator = paginator_class(order, paginate_by)
+                order = paginator.page(page)
+                context = {'cartItems':cartItems,'table':order,"info":shipping}
+                context['form']= InputForm()
+
+                return render(request, 'store/records.html', context)
+        except Product.DoesNotExist:
+                return HttpResponse("no such product")
+    else:
+      data = cartData(request)
+      cartItems = data['cartItems']
+      # products= Product.objects.all()
+      order = OrderItem.objects.all().order_by("-id")
+      shipping = ShippingAddress.objects.all()
+      
+      paginator = paginator_class(order, paginate_by)
+      order = paginator.page(page)
+      context = {'cartItems':cartItems,'table':order,"info":shipping}
+      context['form']= InputForm()
+
+      return render(request, 'store/records.html', context)
 
 def updateItem(request):
   data = json.loads(request.body)

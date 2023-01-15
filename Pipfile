@@ -9,6 +9,9 @@ sorl-thumbnail = "*"
 pillow = "*"
 django-allauth = "*"
 xhtml2pdf = "*"
+dj-database-url = "*"
+gunicorn = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 
