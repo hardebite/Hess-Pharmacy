@@ -1,5 +1,5 @@
 from .import views 
-from django.urls import path
+from django.urls import include, path
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 # app_name = "store"
@@ -7,6 +7,7 @@ urlpatterns = [
     path('',views.home ,name = "home"),
     path('store/',views.store, name = "store"),
     path("cart/",views.cart,name= "cart"),
+    path('accounts/', include('allauth.urls')),
     path('checkout/',views.checkout, name = 'checkout'),
     path('update_item/',views.updateItem, name = 'update_item'),
     path('process_order/',views.processOrder, name = 'process_order'),

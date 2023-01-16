@@ -46,8 +46,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'sorl.thumbnail',
-    'wkhtmltopdf',
-    'jsonfield'
+    'jsonfield',
+    'xhtml2pdf'
     
 ]
 
@@ -161,6 +161,7 @@ ACCOUNT_USERNAME_MIN_LENGTH = 2
 AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend"
+    
 )
 # smtp configuration
 # smtp configuration
