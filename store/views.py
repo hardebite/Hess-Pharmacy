@@ -75,6 +75,8 @@ def store(request):
       data = cartData(request)
       cartItems = data['cartItems']
       products = Product.objects.order_by('-sales')
+      for product in products :
+        print(product.imageUrl)
       paginator = paginator_class(products, paginate_by)
       products = paginator.page(page)
       context = {'products':products,'cartItems':cartItems,}
