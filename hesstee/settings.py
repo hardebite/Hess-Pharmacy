@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-4)79mo808*k^@z(fug!9t&x8$fe(70&5f*1pp8(m6gh92%vm60'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = 'RENDER' not in os.environ
 
 ALLOWED_HOSTS = ["*"]
 
@@ -47,19 +47,20 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'sorl.thumbnail',
     'jsonfield',
-    'xhtml2pdf'
+    'xhtml2pdf',
+    "whitenoise.runserver_nostatic",
     
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'hesstee.urls'
@@ -87,15 +88,22 @@ WSGI_APPLICATION = 'hesstee.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-DATABASES ={
-    'default':dj_database_url.parse(os.environ.get('DATABASE_URL'))
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         # Feel free to alter this value to suit your needs.
+#         default='postgresql://postgres:postgres@localhost:5432/mysite',
+#         conn_max_age=600
+#     )
+# }
+# DATABASES ={
+#     'default':dj_database_url.parse(os.environ.get('DATABASE_URL'))
+# }
 
 
 # Password validation
@@ -134,18 +142,22 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/3.0/howto/static-files/
+
 # This setting tells Django at which URL static files are going to be served to the user.
 # Here, they well be accessible at your-domain.onrender.com/static/...
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR,"static")
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # Following settings only make sense on production and may break development environments.
-if not DEBUG:    # Tell Django to copy statics to the `staticfiles` directory
+if not DEBUG:
+    # Tell Django to copy statics to the `staticfiles` directory
     # in your application directory on Render.
-    STATIC_ROOT = os.path.join(BASE_DIR,"static")
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
     # Turn on WhiteNoise storage backend that takes care of compressing static files
     # and creating unique names for each version so they can safely be cached forever.
-    STATIC_ROOT_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    STATIC_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_ROOT = os.path.join(BASE_DIR,"static/images")
 MEDIA_URL = "/images/"
