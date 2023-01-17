@@ -181,7 +181,7 @@ footer{
   .tip{
 	position: relative;
 	right: 70px;
-	color: green;
+	
   }
   .top-desc{
 	position: relative;
@@ -220,7 +220,7 @@ footer{
 	background-repeat: no-repeat;
 	margin-top: 50px;
 	background-size: 100% 100%;
-	background-attachment: fixed;
+	/* background-attachment: fixed; */
 	/* width:auto;
 	height: 400px; */
 }

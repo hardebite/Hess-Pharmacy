@@ -89,16 +89,22 @@ WSGI_APPLICATION = 'hesstee.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-# DATABASES ={
-#     'default':dj_database_url.parse(os.environ.get('DATABASE_URL'))
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
 # }
-
+DATABASES ={
+    'default':dj_database_url.parse(os.environ.get('DATABASE_URL'))
+}
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         # Feel free to alter this value to suit your needs.
+#         default='postgres://hessteedb_user:506HUqF9d9GqIxnkv4rr9y3xGWVjLabw@dpg-cf22diarrk0bppa9gmpg-a.oregon-postgres.render.com/hessteedb',
+#         conn_max_age=600
+#     )
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -144,11 +150,11 @@ STATIC_URL = '/static/'
 if not DEBUG:
     # Tell Django to copy statics to the `staticfiles` directory
     # in your application directory on Render.
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
     # Turn on WhiteNoise storage backend that takes care of compressing static files
     # and creating unique names for each version so they can safely be cached forever.
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    STATIC_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 
