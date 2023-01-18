@@ -65,7 +65,7 @@ def store(request):
                 context = {'products':products,'cartItems':cartItems,}
                 context['form']= InputForm()
                 
-                print(products)
+                
                 
                 
                 return render(request, 'store/store.html', context)
@@ -75,8 +75,6 @@ def store(request):
       data = cartData(request)
       cartItems = data['cartItems']
       products = Product.objects.order_by('-sales')
-      for product in products :
-        print(product.imageUrl)
       paginator = paginator_class(products, paginate_by)
       products = paginator.page(page)
       context = {'products':products,'cartItems':cartItems,}
@@ -163,14 +161,12 @@ def record (request):
       page = 1
 
     if request.method == 'POST':
-        # print('yrs')
         data = cartData(request)
         cartItems = data['cartItems']
         data = request.POST['search']
        
        
         try:
-                # products = Product.objects.filter(name__icontains = data)
                 order = OrderItem.objects.filter(order__transaction_id__icontains = data).order_by('-id')
                 shipping = ShippingAddress.objects.all()
                 
@@ -185,7 +181,6 @@ def record (request):
     else:
       data = cartData(request)
       cartItems = data['cartItems']
-      # products= Product.objects.all()
       order = OrderItem.objects.all().order_by("-id")
       shipping = ShippingAddress.objects.all()
       
@@ -210,7 +205,6 @@ def updateItem(request):
 
   if action == 'add':
     orderItem.quantity=(orderItem.quantity+1)
-    # print("add")
   elif action == 'remove':
      orderItem.quantity=(orderItem.quantity-1)
   orderItem.save()
@@ -256,12 +250,10 @@ def processOrder(request):
     if float(total) == float(order.get_cart_total):
       order.complete = True
     final_data = cartData(request)
-    # print(final_data)
     global name,email,orders,totals,items,address,city,number, id
     items = final_data['items']
     orders =final_data['order']
     for item in items:
-        # print(item['product']['name'])
         try:
           item_id =item.product.id
         except:
@@ -386,7 +378,6 @@ def NewProduct(request):
     except:
       sales_price = 0
     image = request.FILES['image']
-    print(image)
     fss = FileSystemStorage()
     file = fss.save(image,image)
     file_url = fss.url(file)
