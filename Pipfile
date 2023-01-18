@@ -52,6 +52,8 @@ toml = "==0.10.2"
 uritemplate = "==4.1.1"
 urllib3 = "==1.26.12"
 yarg = "==0.1.9"
+boto3 = "*"
+django-storages = "*"
 
 [dev-packages]
 
