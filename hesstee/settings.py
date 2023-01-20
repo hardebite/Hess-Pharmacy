@@ -90,15 +90,15 @@ WSGI_APPLICATION = 'hesstee.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-# DATABASES ={
-#     'default':dj_database_url.parse(os.environ.get('DATABASE_URL'))
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
 # }
+DATABASES ={
+    'default':dj_database_url.parse(os.environ.get('DATABASE_URL'))
+}
 # DATABASES = {
 #     'default': dj_database_url.config(
 #         # Feel free to alter this value to suit your needs.
@@ -149,26 +149,35 @@ USE_S3 = True
 
 if USE_S3:
     # aws settings
+    AWS_S3_HOST = 's3.ca-central-1.amazonaws.com'
+    AWS_S3_REGION_NAME = "us-east-1"
+    AWS_QUERYSTRING_AUTH = False
     AWS_ACCESS_KEY_ID = 'AKIARWTIVTTPU4HVJD6R'
     AWS_SECRET_ACCESS_KEY ='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'
     AWS_STORAGE_BUCKET_NAME = 'hesstee'
     AWS_DEFAULT_ACL = 'public-read'
     AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
     AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+    
+    
+    
     # s3 static settings
-    AWS_LOCATION = 'static'
-    STATIC_URL = '/static/'
-    # STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
-    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-    STATIC_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    STATIC_LOCATION = 'static'
+    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
+    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    # s3 public media settings
+    MEDIA_LOCATION = '/images/'
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{MEDIA_LOCATION}/'
+    # MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 else:
-    STATIC_URL = '/staticfiles/'
+    STATIC_URL = '/static/'
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    MEDIA_URL = '/images/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'images')
 
-STATIC_DIRS = (os.path.join(BASE_DIR, 'static'),)
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
-MEDIA_URL = '/images/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'images')
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 

@@ -15,8 +15,7 @@
     {% for product in products %}
     
     <div style="padding-top: 50px;" class="col-6 col-lg-3" >
-        <img class="thumbnail" src="{{product.image.url }}" alt="">
-        
+        <img class="thumbnail" src='{{product.image.url|slice:"0:32" }}/images{{product.image.url|slice:"32:" }}' alt="">
         <div class="box-element product" ></div>
         {% if product.quantity <= 0  %}
         <h6><strong>{{product.name}}</strong></h6>
