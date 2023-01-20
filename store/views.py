@@ -87,7 +87,6 @@ def cart(request):
     cartItems = data['cartItems']
     order = data['order']
     items = data['items']
-    # print(data)
     
     for item in items:
       i = 0
