@@ -90,15 +90,15 @@ WSGI_APPLICATION = 'hesstee.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-# DATABASES ={
-#     'default':dj_database_url.parse(os.environ.get('DATABASE_URL'))
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
 # }
+DATABASES ={
+    'default':dj_database_url.parse(os.environ.get('DATABASE_URL'))
+}
 # DATABASES = {
 #     'default': dj_database_url.config(
 #         # Feel free to alter this value to suit your needs.
@@ -212,6 +212,6 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 465
 EMAIL_USE_SSL = True
 EMAIL_HOST_USER = "adexplace@gmail.com"
-EMAIL_HOST_PASSWORD = os.environ.get('HOST_PASSWORD')
+EMAIL_HOST_PASSWORD = "wovljiqvqprfpobx"
 
 

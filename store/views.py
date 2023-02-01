@@ -23,6 +23,7 @@ from django.http import HttpResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 from django.contrib.staticfiles import finders
+import boto3
 
 # Create your views here. 
 class MyPaginator(Paginator):
@@ -89,16 +90,17 @@ def cart(request):
     items = data['items']
     
     for item in items:
+      print(item.product.image.url)
       i = 0
       try:
         cart_quantity =  item.product.quantity
-      except :
+      except:
          cart_quantity = item['product']['quantity']
       for item in items:
         try:
           if item.product.quantity<= 0:
             item.delete()
-        except:
+        except :
          if item['product']['quantity']<= 0:
           item.delete() 
     context = {"items": items,"order":order,'cartItems':cartItems,'shipping':False}
@@ -169,7 +171,6 @@ def record (request):
         try:
                 order = OrderItem.objects.filter(order__transaction_id__icontains = data).order_by('-id')
                 shipping = ShippingAddress.objects.all()
-                
                 paginator = paginator_class(order, paginate_by)
                 order = paginator.page(page)
                 context = {'cartItems':cartItems,'table':order,"info":shipping}
@@ -301,7 +302,16 @@ def processOrder(request):
     address= data['shipping']['address']
     number= data['shipping']['number']
     city= data['shipping']['city']
-     
+    html_template = 'store/email.html'
+    context = {'name':name,'email':email,'order':orders,'total':totals, 'items':items,'address':address,'number':number,'city':city}
+    print(context)
+    html_message = render_to_string(html_template, { 'context': context, })
+    subject = "Thank you for your purchase"
+    message = EmailMessage(subject, html_message, 
+     "adexplace@gmail.com",
+      [email])
+    message.content_subtype = 'html' # this is required because there is no plain text email message
+    message.send()
     
     return JsonResponse("payment complete",safe=False)
    
@@ -383,6 +393,9 @@ def NewProduct(request):
     file_url = fss.url(file)
     product = Product(name=name,price=price,digital=digital,quantity=quantity,image=image,description=description,sales =sales,sales_price=sales_price)
     product.save()
+
+    
+    
   
   return HttpResponseRedirect(reverse('store'))
 

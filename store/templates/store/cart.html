@@ -49,7 +49,7 @@
         {% for item in items %}
         
         <div class="cart-row">
-            <div style="flex:2"><img class="row-image" src='{{item.product.imageUrl|slice:"0:32" }}/images{{item.product.imageUrl|slice:"32:" }}' alt=""></div>
+            <div style="flex:2"><img class="row-image" src='{{item.product.imageUrl}}' alt=""></div>
             <div style="flex:2"><p>{{item.product.name }}</p> </div>
             {% if item.product.sales %}
             <div style="flex:1"><p> ₦{{item.product.sales_price| floatformat:2}}</p></div>
