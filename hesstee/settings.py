@@ -103,7 +103,7 @@ DATABASES = {
     'ENGINE': 'django.db.backends.postgresql_psycopg2',
     'NAME': 'hesstee',
     'USER': 'hardebite',
-    'PASSWORD':os.environ.get('PASSWORD'),
+    'PASSWORD':'Adexturbo',
     'HOST': 'database-1.c5yle0tvvyvg.us-east-1.rds.amazonaws.com',
     'PORT': '5432',
   }
@@ -154,8 +154,8 @@ if USE_S3:
     AWS_S3_HOST = 's3.ca-central-1.amazonaws.com'
     AWS_S3_REGION_NAME = "us-east-1"
     AWS_QUERYSTRING_AUTH = False
-    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-    AWS_SECRET_ACCESS_KEY =os.environ.get('AWS_SECRET_ACCESS_KEY')
+    AWS_ACCESS_KEY_ID = 'AKIARWTIVTTPU4HVJD6R'
+    AWS_SECRET_ACCESS_KEY ='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'
     AWS_STORAGE_BUCKET_NAME = 'hesstee'
     AWS_DEFAULT_ACL = 'public-read'
     AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
@@ -210,7 +210,7 @@ EMAIL_BACKEND= "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 465
 EMAIL_USE_SSL = True
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('HOST_PASSWORD')
+EMAIL_HOST_USER ='adexplace@gmail.com'
+EMAIL_HOST_PASSWORD ='bjsbffzewrsqwsip'
 
 
