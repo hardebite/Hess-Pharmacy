@@ -171,8 +171,7 @@ def record (request):
         try:
                 order = OrderItem.objects.filter(order__transaction_id__icontains = data).order_by('-id')
                 shipping = ShippingAddress.objects.all()
-                paginator = paginator_class(order, paginate_by)
-                order = paginator.page(page)
+                
                 context = {'cartItems':cartItems,'table':order,"info":shipping}
                 context['form']= InputForm()
 
@@ -281,17 +280,10 @@ def processOrder(request):
             state= data['shipping']['state'],
             zipcode= data['shipping']['zipcode'],
           )
-    
-    
     totals = data['form']['total']
-    
-    
-    
     try:
       name= request.user
       email = request.user.email
-      
-     
     except:
       name = data['form']['name']
       email= data['form']['email']
@@ -302,17 +294,6 @@ def processOrder(request):
     address= data['shipping']['address']
     number= data['shipping']['number']
     city= data['shipping']['city']
-    html_template = 'store/email.html'
-    context = {'name':name,'email':email,'order':orders,'total':totals, 'items':items,'address':address,'number':number,'city':city}
-    print(context)
-    html_message = render_to_string(html_template, { 'context': context, })
-    subject = "Thank you for your purchase"
-    message = EmailMessage(subject, html_message, 
-     "adexplace@gmail.com",
-      [email])
-    message.content_subtype = 'html' # this is required because there is no plain text email message
-    message.send()
-    
     return JsonResponse("payment complete",safe=False)
    
     

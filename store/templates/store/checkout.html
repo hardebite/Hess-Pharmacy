@@ -146,7 +146,7 @@
     userFormData.email = form.email.value
     }
 
-        alert('payment button clicked')
+    
         
         var url = '/process_order/';
     
@@ -195,7 +195,7 @@
   
   FlutterwaveCheckout({
     
-    public_key: "FLWPUBK_TEST-209ffd413df5410cc606a3e3938846fa-X",
+    public_key: os.environ.get('public_key'),
     tx_ref: "titanic-48981487343MDI0NzMx",
     amount: "{{ order.get_cart_total|floatformat:2}}",
     currency: "NGN",
