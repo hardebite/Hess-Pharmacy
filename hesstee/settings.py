@@ -89,25 +89,26 @@ WSGI_APPLICATION = 'hesstee.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
-DATABASES = {
+try:
+    DATABASES = {
+  'default': {
+    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    'NAME': 'hesstee',
+    'USER': 'hardebite',
+    'PASSWORD':'Adexturbo',
+    'HOST': 'database-1.c5yle0tvvyvg.us-east-1.rds.amazonaws.com',
+    'PORT': '5432',
+  }
+}
+   
+except:
+# Production database
+     DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
-# Production database
-# DATABASES = {
-#   'default': {
-#     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#     'NAME': 'hesstee',
-#     'USER': 'hardebite',
-#     'PASSWORD':'Adexturbo',
-#     'HOST': 'database-1.c5yle0tvvyvg.us-east-1.rds.amazonaws.com',
-#     'PORT': '5432',
-#   }
-# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
