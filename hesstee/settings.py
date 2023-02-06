@@ -89,25 +89,24 @@ WSGI_APPLICATION = 'hesstee.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-try:
-    DATABASES = {
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+# Production database
+DATABASES = {
   'default': {
     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    'NAME': 'hesstee',
+    'NAME': 'hessteepharmacy',
     'USER': 'hardebite',
     'PASSWORD':'Adexturbo',
-    'HOST': 'database-1.c5yle0tvvyvg.us-east-1.rds.amazonaws.com',
+    'HOST': 'hessteepharmacy.c5yle0tvvyvg.us-east-1.rds.amazonaws.com',
     'PORT': '5432',
   }
-}
-   
-except:
-# Production database
-     DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
 }
 
 # Password validation
@@ -212,6 +211,6 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 465
 EMAIL_USE_SSL = True
 EMAIL_HOST_USER ='adexplace@gmail.com'
-EMAIL_HOST_PASSWORD ='bjsbffzewrsqwsip'
+EMAIL_HOST_PASSWORD = os.environ.get('HOST_PASSWORD')
 
 
