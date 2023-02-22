@@ -83,13 +83,11 @@ def store(request):
 
 def cart(request):
     data = cartData(request)
-    # print(data)
     cartItems = data['cartItems']
     order = data['order']
     items = data['items']
     
     for item in items:
-      print(item.product.image.url)
       i = 0
       try:
         cart_quantity =  item.product.quantity
@@ -107,7 +105,6 @@ def cart(request):
     return render(request, 'store/cart.html', context)
 
 def checkout(request):
-      # data1 = json.loads(request.body)
       data = cartData(request)
       cartItems = data['cartItems']
       order = data['order']
@@ -194,8 +191,6 @@ def updateItem(request):
   data = json.loads(request.body)
   productId = data['productId']
   action = data['action']
-  print("Action:",action)
-  print("Product:",productId)
  
   customer = request.user.customer
   product = Product.objects.get(id= productId)
@@ -221,9 +216,7 @@ def render_pdf_view(request):
     response['Content-Disposition'] = 'attachment; filename="invoice.pdf"'
     # find the template and render it.
     template = get_template(template_path)
-    # print(template)
     html = template.render(context)
-    # print(html)
     # create a pdf
     pisa_status = pisa.CreatePDF(
        html, dest=response,)
@@ -263,7 +256,6 @@ def processOrder(request):
           new_quantity =item['product']['quantity'] -item['quantity']
         except TypeError:
           new_quantity= 0
-        print(new_quantity)
         products = Product.objects.filter(pk=item_id).update(quantity= new_quantity)
  
     order.save()
