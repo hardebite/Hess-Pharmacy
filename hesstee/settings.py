@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-4)79mo808*k^@z(fug!9t&x8$fe(70&5f*1pp8(m6gh92%vm60'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = true
 
 ALLOWED_HOSTS = ["*"]
 
@@ -97,20 +97,6 @@ DATABASES = {
     }
 }
 
-# DATABASES={
-#     'default':{}
-# }
-# Production database
-# DATABASES = {
-#   'default': {
-#     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#     'NAME': 'hessteepharmacy',
-#     'USER': 'hardebite',
-#     'PASSWORD':'Adexturbo',
-#     'HOST': 'hessteepharmacy.c5yle0tvvyvg.us-east-1.rds.amazonaws.com',
-#     'PORT': '5432',
-#   }
-# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -150,34 +136,12 @@ USE_TZ = True
 
 # This setting tells Django at which URL static files are going to be served to the user.
 # Here, they well be accessible at your-domain.onrender.com/static/...
-USE_S3 = True
 
-if USE_S3:
-    # aws settings
-    AWS_S3_HOST = 's3.ca-central-1.amazonaws.com'
-    AWS_S3_REGION_NAME = "us-east-1"
-    AWS_QUERYSTRING_AUTH = False
-    AWS_ACCESS_KEY_ID = 'AKIARWTIVTTPU4HVJD6R'
-    AWS_SECRET_ACCESS_KEY ='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'
-    AWS_STORAGE_BUCKET_NAME = 'hesstee'
-    AWS_DEFAULT_ACL = 'public-read'
-    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
-    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
-    # s3 static settings
-    STATIC_LOCATION = 'static'
-    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
-    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    # s3 public media settings
-    MEDIA_LOCATION = '/images/'
-    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{MEDIA_LOCATION}/'
-    # MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-else:
-    STATIC_URL = '/static/'
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    MEDIA_URL = '/images/'
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'images')
-
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+MEDIA_URL = '/images/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'images')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
 # Default primary key field type
